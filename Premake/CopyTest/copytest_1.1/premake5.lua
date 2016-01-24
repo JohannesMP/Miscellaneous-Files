@@ -2,7 +2,7 @@ local ROOT = "./"
 
 workspace "PremakeCopyTest"
   configurations { "Debug", "Release" }
-  platforms { "x64", "x32" }
+  platforms { "x64", "x86" }
   location( ROOT .. "proj_" .. _ACTION .. "/" )
 
   project "Test02"
@@ -13,25 +13,9 @@ workspace "PremakeCopyTest"
     -- Compile Configs
     ------------------------------------------------
     flags "FatalWarnings" -- all warnings on
-    
-    filter { "platforms:*32" } architecture "x86"
-    filter { "platforms:*64" } architecture "x64"
-
-    filter { "configurations:Debug" }
-      defines { "DEBUG" }
-      flags { "Symbols" }
-    filter { "configurations:Release" }
-      defines { "NDEBUG" }
-      optimize "On"
-
     filter { "action:gmake" }
       buildoptions { "-std=c++14" }
       toolset "clang"
-    filter { "action:vs*" }
-      buildoptions { "/MP" }         -- enable multithreading
-      flags { "NoMinimalRebuild" }   -- required for multithreading
-      linkoptions { "/ignore:4099" } -- ignore library pdb warnings in debug
-
     filter {} -- reset filter
 
     -- Paths
@@ -44,7 +28,7 @@ workspace "PremakeCopyTest"
     files
     {
       SOURCE .. "**.cpp",
-      -- SOURCE .. "**.txt"
+      SOURCE .. "**.txt"
     }
 
     -- Copying Assets
